@@ -130,11 +130,11 @@ for handCount in handCounts:
 
     print("Percentiles & Mean:")
     print("\tMean: " + str(bestMHTW)))
-    print("\tp10: " + str(np.percentile(timeTo5KNP, 10)))
+    print("\tp1: " + str(np.percentile(timeTo5KNP, 1)))
+    print("\tp25: " + str(np.percentile(timeTo5KNP, 10)))
     print("\tp50: " + str(np.percentile(timeTo5KNP, 50)))
+    print("\tp75: " + str(np.percentile(timeTo5KNP, 50)))
     print("\tp90: " + str(np.percentile(timeTo5KNP, 90)))
-    print("\tp95: " + str(np.percentile(timeTo5KNP, 95)))
-    print("\tp99: " + str(np.percentile(timeTo5KNP, 99)))
 
     plt.hist(timeTo5KNP, bins=range(1, 20))
     plt.title("MHTW: " + str(bestMHTW) + " -- " + str(handCount) + " iterations")
