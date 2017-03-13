@@ -129,7 +129,7 @@ for handCount in handCounts:
     timeTo5KNP = np.array(timeTo5K)
 
     print("Percentiles & Mean:")
-    print("\tMean: " + str(bestMHTW)))
+    print("\tMean: " + str(bestMHTW))
     print("\tp1: " + str(np.percentile(timeTo5KNP, 1)))
     print("\tp25: " + str(np.percentile(timeTo5KNP, 10)))
     print("\tp50: " + str(np.percentile(timeTo5KNP, 50)))
