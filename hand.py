@@ -24,11 +24,11 @@ class kaputHand:
     interactivePlay = False
 
     # TUNING
-    rerollThreshold = 4  # number of dice left (or more) to reroll once 300 is reached
     stingyFives = True  # if there are multiple fives and no ones in a vanilla roll (no straight), take one and reroll
     rollAfterFull = True  # should the bot roll after recieving a flush
-    rerollThresholdAfterFull = 5  # after a full, what should the rerollThreshold be
     ignoreTriple2 = False  # ignore 222 as 200
+    rerollThreshold = 4  # number of dice left (or more) to reroll once 300 is reached
+    rerollThresholdAfterFull = 5  # after a full, what should the rerollThreshold be
     abandon5Threshold = 300  # the score at which, assuming 1 die has been retained, Karl should stop taking fives
 
     def output(self, string):

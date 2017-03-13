@@ -1,15 +1,17 @@
 import hand
 
-playHand = hand.kaputHand()
-playHand.interactivePlay = True
+player = hand.kaputHand()
+player.interactivePlay = True
 
-playHand.rerollThreshold = 5
-playHand.stingyFives = True
-playHand.rollAfterFull = True
-playHand.rerollThresholdAfterFull = 5
+player.stingyFives = True
+player.rollAfterFull = True
+player.ignoreTriple2 = True
+player.rerollThreshold = 6
+player.rerollThresholdAfterFull = 6
+player.abandon5Threshold = 450
 
 while 1:
-    playHand.refresh()
+    player.refresh()
     print("============== NEW ROLL ==============")
-    while playHand.handInPlay:
-        playHand.roll()
+    while player.handInPlay:
+        player.roll()

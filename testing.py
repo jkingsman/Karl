@@ -52,7 +52,6 @@ for handCount in handCounts:
                             testHands.append(options.copy())
                             gameModes += 1
 
-
     # mode testing
     for testHand in testHands:
         testHandObj = hand.kaputHand()
