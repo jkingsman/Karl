@@ -10,10 +10,10 @@ player.silent = True
 
 player.stingyFives = True
 player.rollAfterFull = True
-player.ignoreTriple2 = True
-player.rerollThreshold = 6
-player.rerollThresholdAfterFull = 6
-player.abandon5Threshold = 450
+player.ignoreTriple2 = False
+player.rerollThreshold = 4
+player.rerollThresholdAfterFull = 4
+player.abandon5Threshold = 50
 
 for _ in range(handCount):
     player.refresh()
@@ -32,7 +32,7 @@ for _ in range(handCount):
 results = np.array(turnsTo5K)
 mean = np.mean(results)
 
-print("====== SINGLE STRATEGY DRILLDOWN: " + str(player) + " MHTW ======")
+print("====== SINGLE STRATEGY DRILLDOWN: " + str(mean) + " MHTW ======")
 print("stingyFives: " + str(player.stingyFives))
 print("rollAfterFull: " + str(player.rollAfterFull))
 print("ignoreTriple2: " + str(player.ignoreTriple2))
@@ -53,4 +53,4 @@ plt.hist(results, bins=range(1, 20))
 plt.title("MHTW " + str(mean) + " -- " + str(handCount) + " iterations")
 plt.xlabel("Mean Hands to Win")
 plt.ylabel("Occurrences")
-plt.show()
+# plt.show()
