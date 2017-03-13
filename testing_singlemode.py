@@ -13,7 +13,7 @@ player.rollAfterFull = True
 player.ignoreTriple2 = False
 player.rerollThreshold = 4
 player.rerollThresholdAfterFull = 4
-player.abandon5Threshold = 50
+player.abandon5Threshold = 450
 
 for _ in range(handCount):
     player.refresh()
