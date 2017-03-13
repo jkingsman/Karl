@@ -5,7 +5,9 @@ import pprint
 import copy
 
 # handCounts = [10, 100, 1000, 10000, 100000]
-handCounts = [1000]
+handCounts = [100]
+
+lastPercentage = -1
 
 for handCount in handCounts:
     bestMHTW = 99999.99
@@ -63,12 +65,12 @@ for handCount in handCounts:
         testHandObj.ignoreTriple2 = testHand['ignoreTriple2']
         testHandObj.abandon5Threshold = testHand['abandon5Threshold']
 
-        print("stingyFives: " + str(testHandObj.stingyFives))
-        print("rollAfterFull: " + str(testHandObj.rollAfterFull))
-        print("ignoreTriple2: " + str(testHandObj.ignoreTriple2))
-        print("rerollThreshold: " + str(testHandObj.rerollThreshold))
-        print("rerollThresholdAfterFull: " + str(testHandObj.rerollThresholdAfterFull))
-        print("abandon5Threshold: " + str(testHandObj.abandon5Threshold))
+        # print("stingyFives: " + str(testHandObj.stingyFives))
+        # print("rollAfterFull: " + str(testHandObj.rollAfterFull))
+        # print("ignoreTriple2: " + str(testHandObj.ignoreTriple2))
+        # print("rerollThreshold: " + str(testHandObj.rerollThreshold))
+        # print("rerollThresholdAfterFull: " + str(testHandObj.rerollThresholdAfterFull))
+        # print("abandon5Threshold: " + str(testHandObj.abandon5Threshold))
 
         turnsTo5K = []
 
@@ -89,10 +91,11 @@ for handCount in handCounts:
         results = np.array(turnsTo5K)
         mhtw = np.mean(results)
         gameModesPlayed += 1
-        print("Mean hands to win: " +
-              str(mhtw))
-        print("Played " + str(gameModesPlayed) + " modes out of " + str(gameModes) + "(" + str(round((gameModesPlayed / gameModes) * 100)) + "% done)")
-        print("")
+        # print("Mean hands to win: " +
+        #       str(mhtw))
+        if round((gameModesPlayed / gameModes) * 100) % 5 == 0 and round((gameModesPlayed / gameModes) * 100) > lastPercentage:
+            print("Played " + str(gameModesPlayed) + " modes out of " + str(gameModes) + "(" + str(round((gameModesPlayed / gameModes) * 100)) + "% done)")
+            lastPercentage = round((gameModesPlayed / gameModes) * 100)
 
         # handle best scoring
         if mhtw.item() < bestMHTW:
