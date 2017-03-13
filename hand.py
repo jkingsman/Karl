@@ -43,6 +43,8 @@ class kaputHand:
         self.score = 0
         self.kaput = False
         self.handInPlay = True
+        self.endGameMode = False
+        self.scoreToBeat = 0
 
     def diceToRoll(self):
         return self.TOTALDIE - len(self.kept)
@@ -69,11 +71,12 @@ class kaputHand:
         return False
 
     def getRoll(self):
+        if self.endGameMode and self.scoreToBeat == 0:
+            self.scoreToBeat = int(input("Score to beat: "))
+
         if self.interactivePlay:
             prompt = "Enter roll (" + str(self.diceToRoll()) + " dice, or 'e' to enter endgame mode): "
             if self.endGameMode:
-                if self.scoreToBeat == 0:
-                    self.scoreToBeat = int(input("Score to beat: "))
                 prompt = "Enter roll (" + str(self.diceToRoll()) + " dice, in endgame mode -- " + str(self.scoreToBeat) + " to beat): "
 
             inputRoll = input(prompt)
