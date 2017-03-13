@@ -1,5 +1,5 @@
 import random
-
+import numpy
 
 class kaputHand:
     TOTALDIE = 6
@@ -88,7 +88,7 @@ class kaputHand:
 
             return sorted([int(i) for i in list(inputRoll)])
         else:
-            return sorted([random.randint(1, 6) for
+            return sorted([numpy.random.randint(1, 7) for
                           i in range(self.diceToRoll())])
 
     def roll(self):

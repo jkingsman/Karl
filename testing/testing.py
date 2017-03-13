@@ -5,8 +5,8 @@ import pprint
 import copy
 
 # handCounts = [10, 100, 1000, 10000, 100000]
-handCounts = [100]
-
+handCounts = [100, 1000, 10000]
+debugOutput = False
 lastPercentage = -1
 
 for handCount in handCounts:
@@ -64,12 +64,13 @@ for handCount in handCounts:
         testHandObj.ignoreTriple2 = testHand['ignoreTriple2']
         testHandObj.abandon5Threshold = testHand['abandon5Threshold']
 
-        # print("stingyFives: " + str(testHandObj.stingyFives))
-        # print("rollAfterFull: " + str(testHandObj.rollAfterFull))
-        # print("ignoreTriple2: " + str(testHandObj.ignoreTriple2))
-        # print("rerollThreshold: " + str(testHandObj.rerollThreshold))
-        # print("rerollThresholdAfterFull: " + str(testHandObj.rerollThresholdAfterFull))
-        # print("abandon5Threshold: " + str(testHandObj.abandon5Threshold))
+        if debugOutput:
+            print("stingyFives: " + str(testHandObj.stingyFives))
+            print("rollAfterFull: " + str(testHandObj.rollAfterFull))
+            print("ignoreTriple2: " + str(testHandObj.ignoreTriple2))
+            print("rerollThreshold: " + str(testHandObj.rerollThreshold))
+            print("rerollThresholdAfterFull: " + str(testHandObj.rerollThresholdAfterFull))
+            print("abandon5Threshold: " + str(testHandObj.abandon5Threshold))
 
         turnsTo5K = []
 
