@@ -128,12 +128,13 @@ for handCount in handCounts:
 
     timeTo5KNP = np.array(timeTo5K)
 
-    print("Percentiles:")
-    print("\t10%: " + str(np.percentile(timeTo5KNP, 10)))
-    print("\t50%: " + str(np.percentile(timeTo5KNP, 50)))
-    print("\t90%: " + str(np.percentile(timeTo5KNP, 90)))
-    print("\t95%: " + str(np.percentile(timeTo5KNP, 95)))
-    print("\t99%: " + str(np.percentile(timeTo5KNP, 99)))
+    print("Percentiles & Mean:")
+    print("\tMean: " + str(bestMHTW)))
+    print("\tp10: " + str(np.percentile(timeTo5KNP, 10)))
+    print("\tp50: " + str(np.percentile(timeTo5KNP, 50)))
+    print("\tp90: " + str(np.percentile(timeTo5KNP, 90)))
+    print("\tp95: " + str(np.percentile(timeTo5KNP, 95)))
+    print("\tp99: " + str(np.percentile(timeTo5KNP, 99)))
 
     plt.hist(timeTo5KNP, bins=range(1, 20))
     plt.title("MHTW: " + str(bestMHTW) + " -- " + str(handCount) + " iterations")
