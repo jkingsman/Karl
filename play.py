@@ -8,5 +8,8 @@ playHand.stingyFives = True
 playHand.rollAfterFull = True
 playHand.rerollThresholdAfterFull = 5
 
-while playHand.handInPlay:
-    playHand.roll()
+while 1:
+    playHand.refresh()
+    print("============== NEW ROLL ==============")
+    while playHand.handInPlay:
+        playHand.roll()

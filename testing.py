@@ -5,7 +5,7 @@ import pprint
 import copy
 
 # handCounts = [10, 100, 1000, 10000, 100000]
-handCounts = [10000]
+handCounts = [1000]
 
 for handCount in handCounts:
     bestMHTW = 99999.99
@@ -18,6 +18,7 @@ for handCount in handCounts:
     gameModes = 0
     gameModesPlayed = 0
 
+    # mode assembly
     for rollAfterFullIter in range(2):
         options = {}
         if rollAfterFullIter == 0:
@@ -31,15 +32,26 @@ for handCount in handCounts:
             else:
                 options['stingyFives'] = True
 
-            for rerollThresholdAfterFullSet in range(7):
-                options['rerollThresholdAfterFull'] = rerollThresholdAfterFullSet
+            for ignoreTriple2Iter in range(2):
+                if ignoreTriple2Iter == 0:
+                    options['ignoreTriple2'] = False
+                else:
+                    options['ignoreTriple2'] = True
 
-                for rerollThresholdSet in range(7):
-                    options['rerollThreshold'] = rerollThresholdSet
+                for rerollThresholdAfterFullSet in range(6):
+                    options['rerollThresholdAfterFull'] = rerollThresholdAfterFullSet + 1
 
-                    testHands.append(options.copy())
-                    gameModes += 1
+                    for rerollThresholdSet in range(6):
+                        options['rerollThreshold'] = rerollThresholdSet + 1
 
+                        for abandon5ThresholdSet in range(50, 500, 50):
+                            options['abandon5Threshold'] = abandon5ThresholdSet
+
+                            testHands.append(options.copy())
+                            gameModes += 1
+
+
+    # mode testing
     for testHand in testHands:
         testHandObj = hand.kaputHand()
         testHandObj.silent = True
@@ -48,11 +60,15 @@ for handCount in handCounts:
         testHandObj.rollAfterFull = testHand['rollAfterFull']
         testHandObj.rerollThreshold = testHand['rerollThreshold']
         testHandObj.rerollThresholdAfterFull = testHand['rerollThresholdAfterFull']
+        testHandObj.ignoreTriple2 = testHand['ignoreTriple2']
+        testHandObj.abandon5Threshold = testHand['abandon5Threshold']
 
         print("stingyFives: " + str(testHandObj.stingyFives))
         print("rollAfterFull: " + str(testHandObj.rollAfterFull))
+        print("ignoreTriple2: " + str(testHandObj.ignoreTriple2))
         print("rerollThreshold: " + str(testHandObj.rerollThreshold))
         print("rerollThresholdAfterFull: " + str(testHandObj.rerollThresholdAfterFull))
+        print("abandon5Threshold: " + str(testHandObj.abandon5Threshold))
 
         turnsTo5K = []
 
@@ -84,10 +100,12 @@ for handCount in handCounts:
             bestMHTWObj = copy.deepcopy(testHandObj)
 
     print("====== OPTIMUM TUNING: " + str(bestMHTW) + " MHTW ======")
-    print("stingyFives: " + str(bestMHTWObj.stingyFives))
-    print("rollAfterFull: " + str(bestMHTWObj.rollAfterFull))
-    print("rerollThreshold: " + str(bestMHTWObj.rerollThreshold))
-    print("rerollThresholdAfterFull: " + str(bestMHTWObj.rerollThresholdAfterFull))
+    print("stingyFives: " + str(testHandObj.stingyFives))
+    print("rollAfterFull: " + str(testHandObj.rollAfterFull))
+    print("ignoreTriple2: " + str(testHandObj.ignoreTriple2))
+    print("rerollThreshold: " + str(testHandObj.rerollThreshold))
+    print("rerollThresholdAfterFull: " + str(testHandObj.rerollThresholdAfterFull))
+    print("abandon5Threshold: " + str(testHandObj.abandon5Threshold))
     print("Played " + str(handCount * gameModes) + " games in " + str(gameModes) + " modes")
 
     timeTo5K = []
@@ -115,7 +133,8 @@ for handCount in handCounts:
     print("\t99%: " + str(np.percentile(timeTo5KNP, 99)))
 
     plt.hist(timeTo5KNP, bins=range(1, 20))
-    plt.suptitle("MHTW: " + str(bestMHTW) + " -- " + str(handCount) + " iterations")
-    plt.title("(stingy: " + str(bestMHTWObj.stingyFives) + ", rollAFterFull: " + str(bestMHTWObj.rollAfterFull) + ", rerollThresh: " + str(bestMHTWObj.rerollThreshold) + ", rerollThreshPostFull: " + str(bestMHTWObj.rerollThresholdAfterFull) + ")")
-    plt.savefig("optimum-" + str(handCount) + ".png")
+    plt.title("MHTW: " + str(bestMHTW) + " -- " + str(handCount) + " iterations")
+    plt.xlabel("Mean Hands to Win")
+    plt.ylabel("Occurrences")
+    plt.savefig("optimum-test-" + str(handCount) + ".png")
     print("Histogram saved!")

@@ -28,6 +28,8 @@ class kaputHand:
     stingyFives = True  # if there are multiple fives and no ones in a vanilla roll (no straight), take one and reroll
     rollAfterFull = True  # should the bot roll after recieving a flush
     rerollThresholdAfterFull = 5  # after a full, what should the rerollThreshold be
+    ignoreTriple2 = False  # ignore 222 as 200
+    abandon5Threshold = 300  # the score at which, assuming 1 die has been retained, Karl should stop taking fives
 
     def output(self, string):
         if not self.silent:
@@ -46,14 +48,17 @@ class kaputHand:
         return self.TOTALDIE - len(self.kept)
 
     def shouldRoll(self):
+        if self.endGameMode:
+            if self.score <= self.scoreToBeat:
+                return True
+            else:
+                return False
+
         if self.fulls > 0:
             if not self.rollAfterFull:
                 return False
             if self.diceToRoll() >= self.rerollThresholdAfterFull:
                 return True
-
-        if self.endGameMode and self.score < self.scoreToBeat:
-            return True
 
         if self.score < 300:
             return True
@@ -65,18 +70,25 @@ class kaputHand:
 
     def getRoll(self):
         if self.interactivePlay:
-            inputRoll = input("Enter roll (" + str(self.diceToRoll()) +
-                              " dice): ")
+            prompt = "Enter roll (" + str(self.diceToRoll()) + " dice, or 'e' to enter endgame mode): "
+            if self.endGameMode:
+                if self.scoreToBeat == 0:
+                    self.scoreToBeat = int(input("Score to beat: "))
+                prompt = "Enter roll (" + str(self.diceToRoll()) + " dice, in endgame mode -- " + str(self.scoreToBeat) + " to beat): "
+
+            inputRoll = input(prompt)
+
+            # convert to endgame mode
+            if "e" in inputRoll:
+                self.endGameMode = True
+                return self.getRoll()
+
             return sorted([int(i) for i in list(inputRoll)])
         else:
             return sorted([random.randint(1, 6) for
                           i in range(self.diceToRoll())])
 
     def roll(self):
-        # handle endgame input if we're in it
-        if self.endGameMode and self.scoreToBeat == 0:
-            self.scoreToBeat = int(input("Score to beat: "))
-
         if self.shouldRoll():
             self.rolled = self.getRoll()
             self.output("ROLLED: " + str(self.rolled))
@@ -101,9 +113,12 @@ class kaputHand:
         # find triples
         triples = set([x for x in self.rolled if self.rolled.count(x) >= 3])
         for value in triples:
-            if value == 2 and self.rolled.count(1) > 2:
-                # skip 200 if we have it better in ones
-                continue
+            # 2s handling
+            if value == 2:
+                if self.ignoreTriple2:
+                    # only ignore 2's if we can
+                    if self.rolled.count(1) > 0 or self.rolled.count(5) > 0 or len(triples) > 1:
+                        continue
 
             if value == 1:
                 self.score += 1000
@@ -131,14 +146,19 @@ class kaputHand:
         for value in iterableRolled:
             if value == 1:
                 self.score += 100
-            elif value == 5:
-                self.score += 50
-            else:
-                continue
+                self.kept.append(value)
+                self.rolled.remove(value)
+                keptThisHand += 1
 
-            self.kept.append(value)
-            self.rolled.remove(value)
-            keptThisHand += 1
+        for value in iterableRolled:
+            if value == 5:
+                if keptThisHand >= 1 and self.score > self.abandon5Threshold:
+                    return
+                else:
+                    self.score += 50
+                    self.kept.append(value)
+                    self.rolled.remove(value)
+                    keptThisHand += 1
 
         if keptThisHand == 0:
             self.handInPlay = False
@@ -170,6 +190,8 @@ class kaputHand:
         print("Turn status:")
         print("\tKept: " + str(self.kept))
         print("\tScore: " + str(self.score))
+        if self.fulls > 0:
+            print("\tFulls: " + str(self.fulls))
         print("\tKaput? " + str(self.kaput))
         print("")
 
