@@ -22,8 +22,10 @@ player.rerollThresholdAfterFull = 5
 * Added endgame mode management
 * Process 1's and 5's separately
 
-**Won: 0**
+**Won: 1** (first win)
 **Lost: 1**
+
+Beat Jack, Evan, Max, Matti
 
 
 Optimal play:
